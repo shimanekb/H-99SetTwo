@@ -8,6 +8,7 @@ data Count b = Single b |
 encodeModified :: Eq a => [a] -> [Count a]
 encodeModified [] = []
 encodeModified (x:xs) 
- | (n == 1)  = (Single x) : encodeModified xs
- | otherwise = (Multiple n x) : encodeModified (dropWhile (==x) xs)
- where n = 1 + (length (takeWhile (==x) xs))
+ | (n == 1)  = Single x : encodeModified xs
+ | otherwise = Multiple n x : encodeDrop xs
+ where n          = 1 + (length $ takeWhile (==x) xs)
+       encodeDrop = encodeModified . dropWhile (==x)
